@@ -22,16 +22,9 @@ library(tidyverse)
 library(haven) # for reading stata data
 library(lfe) # for fixed effect regression
 library(stargazer) # for pretty regression tables
-<<<<<<< HEAD
-<<<<<<< HEAD
 library(xtable)
-=======
 library(Hmisc)
->>>>>>> 9010229b46d70ceae3e2d6458d8c2fd0f7413ef2
-=======
 library(ggplot2)
-
->>>>>>> f18bc90efd905c9df7150b4370461806b0ea40c2
 #-----------------------------------
 # Loading In the Data
 #-----------------------------------
@@ -55,10 +48,6 @@ sample_df = sample_n(df, 100000)
 
 #Here is where we will clean our data
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 #Trying to figure out #s of people in a given city
 cities <- as.data.frame(table(df$PWMETRO))
 names(cities) <- c("PWMETRO", "number")
@@ -82,21 +71,45 @@ print(xtable(cities271to300, type = "latex"), file = "C:/Users/ahkan/Desktop/Fam
 print(xtable(cities301to332, type = "latex"), file = "C:/Users/ahkan/Desktop/Family-Cohort/family-cohort/PWMetrotables/pwmetrowhole301-332.tex")
 
 
-#organized by city-year (we need to replace cityname w/ the desired name, & replace 4480 with desired city code)
-cityname_1980 <- subset(df, PWMETRO == 4480) %>% subset(YEAR == 1980)
-cityname_1990 <- subset(df, PWMETRO == 4480) %>% subset(YEAR == 1990)
-cityname_2000 <- subset(df, PWMETRO == 4480) %>% subset(YEAR == 2000)
+#smaller datasets organized by city & year 
+Milwaukee_1980 <- subset(df, PWMETRO == 5080) %>% subset(YEAR == 1980)
+Milwaukee_1990 <- subset(df, PWMETRO == 5080) %>% subset(YEAR == 1990)
+Milwaukee_2000 <- subset(df, PWMETRO == 5080) %>% subset(YEAR == 2000)
+MilwaukeeAll <- subset(df, PWMETRO == 5080)
 
 
+SanAntonio_1980 <- subset(df, PWMETRO == 7240) %>% subset(YEAR == 1980)
+SanAntonio_1990 <- subset(df, PWMETRO == 7240) %>% subset(YEAR == 1990)
+SanAntonio_2000 <- subset(df, PWMETRO == 7240) %>% subset(YEAR == 2000)
+SanAntonioAll <- subset(df, PWMETRO == 7240)
+
+Charlotte_1980 <- subset(df, PWMETRO == 1520) %>% subset(YEAR == 1980)
+Charlotte_1990 <- subset(df, PWMETRO == 1520) %>% subset(YEAR == 1990)
+Charlotte_2000 <- subset(df, PWMETRO == 1520) %>% subset(YEAR == 2000)
+CharlotteAll <-subset(df, PWMETRO == 1520)
+
+Chicago_1980 <- subset(df, PWMETRO == 1600) %>% subset(YEAR == 1980)
+Chicago_1990 <- subset(df, PWMETRO == 1600) %>% subset(YEAR == 1990)
+Chicago_2000 <- subset(df, PWMETRO == 1600) %>% subset(YEAR == 2000)
+ChicagoAll <- subset(df, PWMETRO == 1600)
+
+Houston_1980 <- subset(df, PWMETRO == 3360) %>% subset(YEAR == 1980)
+Houston_1990 <- subset(df, PWMETRO == 3360) %>% subset(YEAR == 1990)
+Houston_2000 <- subset(df, PWMETRO == 3360) %>% subset(YEAR == 2000)
+HoustonAll <- subset(df, PWMETRO == 3360)
+
+Atlanta_1980 <- subset(df, PWMETRO == 520) %>% subset(YEAR == 1980)
+Atlanta_1990 <- subset(df, PWMETRO == 520) %>% subset(YEAR == 1990)
+Atlanta_2000 <- subset(df, PWMETRO == 520) %>% subset(YEAR == 2000)
+AtlantaAll <- subset(df, PWMETRO == 520)
 
 
->>>>>>> 55c6480584623b46164e3ef6b4a9ad988a7497cf
-=======
 #sex codebooks
 sex_codebook <- tibble(SEX = c(1, 2),
                        sex = c("Male", "Female"))
 sexsp_codebook <- tibble(SEX_SP = c(1,2),
                          sexsp = c("Male", "Female"))
+
 #limited df to test stuff on
 dflimited <- head(df, 15)
 
@@ -126,7 +139,7 @@ filtereddfclean <- filtereddf %>% left_join(sex_codebook) %>%
   left_join(race_codebook) %>%
   left_join(racesp_codebook)
 
-<<<<<<< HEAD
+
 # for creating a table with the race percentages once the cityname-year dfs exist
 cityname_1980 <- cityname_1980 %>% left_join(race_codebook)
 racecityname_1980 <- as.data.frame(table(cityname_1980$race))
@@ -134,8 +147,6 @@ names(racecityname_1980) <- c("Race", "Population")
 observationscityname_1980 <- nrow(cityname_1980)
 racecityname_1980$Percent <- 0
 racecityname_1980$Percent <- (racecityname_1980$Population / observationscityname_1980)
->>>>>>> 9010229b46d70ceae3e2d6458d8c2fd0f7413ef2
-=======
 
 #duplicating the creation of the cityname_year dfs in order to test the rest of the code
 #cityname_1980 <- subset(df, PWMETRO == 4480) %>% subset(YEAR == 1980)
@@ -143,8 +154,6 @@ racecityname_1980$Percent <- (racecityname_1980$Population / observationscitynam
 #cityname_2000 <- subset(df, PWMETRO == 4480) %>% subset(YEAR == 2000)
 
 
->>>>>>> 6a5782310fdaa25e8e4956faea4a1a4a3f89d62b
-=======
 # Sunday, April 28th
 NYmetro_df <- df %>%
   filter(PWMETRO == 5600) %>%
@@ -163,7 +172,6 @@ summary(NYmetro_df)
   
 LAmetro_df <- df %>%
   filter(PWMETRO == 4480) 
->>>>>>> f18bc90efd905c9df7150b4370461806b0ea40c2
 
 #-----------------------------------
 # Figures
@@ -171,14 +179,12 @@ LAmetro_df <- df %>%
 
 #Here is where we will make our figures 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 metro <- sample_df$PWMETRO
 
 ##
 
 
-=======
 #"Proof of Concept" - Cedric
 
 tiny_df <- df[1:1000000, 1:105]
@@ -285,9 +291,7 @@ sample_df <-
   left_join(SPEAKENGSP_codebook)
 
 #racial composition within New York metro area
->>>>>>> 55c6480584623b46164e3ef6b4a9ad988a7497cf
 
-<<<<<<< HEAD
 tinyNY_df <- tiny_df %>%
   filter(PWMETRO == 5600)
 
@@ -302,10 +306,10 @@ NY_df2 <- NY_df %>%
 
 #MARST == 1: spouse present
 
-<<<<<<< HEAD
+
 NY_df1 <- NY_df %>%
   filter(MARST == 1)
-=======
+
 pwmetro <- tibble(PWMETRO = c(4480), pwmetro = "Los Angeles-Long Beach")
 
 
