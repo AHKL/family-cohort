@@ -116,11 +116,11 @@ dflimited <- head(df, 15)
 #race codebooks
 race_codebook <- tibble(RACE = c(1, 2, 3, 4, 5, 6, 7, 8, 9),
                         race = c("White", "Black", "Native",
-                                 "Chinese", " Japanese", "OtherAsian",
+                                 "Asian", "Asian", "Asian",
                                  "Other", "Multi", "Multi"))
 racesp_codebook <- tibble(RACE_SP = c(1, 2, 3, 4, 5, 6, 7, 8, 9),
                           racesp = c("White", "Black", "Native",
-                                 "Chinese", " Japanese", "OtherAsian",
+                                 "Asian", "Asian", "Asian",
                                  "Other", "Multi", "Multi"))
 
 #demonstration codebooks work on limited version
@@ -138,20 +138,6 @@ filtereddfclean <- filtereddf %>% left_join(sex_codebook) %>%
   left_join(sexsp_codebook) %>%
   left_join(race_codebook) %>%
   left_join(racesp_codebook)
-
-
-# for creating a table with the race percentages once the cityname-year dfs exist
-cityname_1980 <- cityname_1980 %>% left_join(race_codebook)
-racecityname_1980 <- as.data.frame(table(cityname_1980$race))
-names(racecityname_1980) <- c("Race", "Population")
-observationscityname_1980 <- nrow(cityname_1980)
-racecityname_1980$Percent <- 0
-racecityname_1980$Percent <- (racecityname_1980$Population / observationscityname_1980)
-
-#duplicating the creation of the cityname_year dfs in order to test the rest of the code
-#cityname_1980 <- subset(df, PWMETRO == 4480) %>% subset(YEAR == 1980)
-#cityname_1990 <- subset(df, PWMETRO == 4480) %>% subset(YEAR == 1990)
-#cityname_2000 <- subset(df, PWMETRO == 4480) %>% subset(YEAR == 2000)
 
 
 # Sunday, April 28th
@@ -322,7 +308,7 @@ pwmetro <- tibble(PWMETRO = c(4480), pwmetro = "Los Angeles-Long Beach")
 f1 <-
 ggplot(data=, aes(x=race, y=percent)) +
     geom_bar(stat="identity", color="blue", fill="white")
-=======
+
 # Sunday, May 5th
 
 # We decide to work on interracial marriages in Los Angeles-Long Beach this time
@@ -416,50 +402,59 @@ Citiestable <- Citiesmetro_df %>%
   group_by(YEAR, PWMETRO) %>%
   mutate(interracial = as.numeric(RACE != RACE_SP)) %>%
   summarise(prop_interracial = mean(interracial))
->>>>>>> f18bc90efd905c9df7150b4370461806b0ea40c2
 
-
-
-=======
+# for creating tables with the race percentages once the cityname-year dfs exist and
 # for creating a line graph with the race percentages once the cityname-year dfs exist
 #For 1980
-cityname_1980 <- cityname_1980 %>% left_join(race_codebook)
-observationscityname_1980 <- nrow(cityname_1980)
-racecityname_1980 <- as.data.frame(table(cityname_1980$race))
-names(racecityname_1980) <- c("Race", "Population")
-racecityname_1980$Percent <- 0
-racecityname_1980$Percent <- (racecityname_1980$Population / observationscityname_1980)
+Milwaukee_1980 <- Milwaukee_1980 %>% left_join(race_codebook)
+observationsMilwaukee_1980 <- nrow(Milwaukee_1980)
+raceMilwaukee_1980 <- as.data.frame(table(Milwaukee_1980$race))
+names(raceMilwaukee_1980) <- c("Race", "Population")
+raceMilwaukee_1980$Percent <- 0
+raceMilwaukee_1980$Percent <- (raceMilwaukee_1980$Population / observationsMilwaukee_1980 * 100)
+nonwhiteraceMilwaukee_1980 <- raceMilwaukee_1980 %>% filter(raceMilwaukee_1980$Race != "White")
 #For if we want to print this to a table as well
 #print(xtable(racecityname_1980, type "latex"), file = "insert file path")
 #For 1990
-cityname_1990 <- cityname_1990 %>% left_join(race_codebook)
-observationscityname_1990 <- nrow(cityname_1990)
-racecityname_1990 <- as.data.frame(table(cityname_1990$race))
-names(racecityname_1990) <- c("Race", "Population")
-racecityname_1990$Percent <- 0
-racecityname_1990$Percent <- (racecityname_1990$Population / observationscityname_1990)
+Milwaukee_1990 <- Milwaukee_1990 %>% left_join(race_codebook)
+observationsMilwaukee_1990 <- nrow(Milwaukee_1990)
+raceMilwaukee_1990 <- as.data.frame(table(Milwaukee_1990$race))
+names(raceMilwaukee_1990) <- c("Race", "Population")
+raceMilwaukee_1990$Percent <- 0
+raceMilwaukee_1990$Percent <- (raceMilwaukee_1990$Population / observationsMilwaukee_1990 * 100)
+nonwhiteraceMilwaukee_1990 <- raceMilwaukee_1990 %>% filter(raceMilwaukee_1990$Race != "White")
 #For if we want to print this to a table as well
 #print(xtable(racecityname_1990, type "latex"), file = "insert file path")
 #For 2000
-cityname_2000 <- cityname_2000 %>% left_join(race_codebook)
-observationscityname_2000 <- nrow(cityname_2000)
-racecityname_2000 <- as.data.frame(table(cityname_2000$race))
-names(racecityname_2000) <- c("Race", "Population")
-racecityname_2000$Percent <- 0
-racecityname_2000$Percent <- (racecityname_2000$Population / observationscityname_2000)
+Milwaukee_2000 <- Milwaukee_2000 %>% left_join(race_codebook)
+observationsMilwaukee_2000 <- nrow(Milwaukee_2000)
+raceMilwaukee_2000 <- as.data.frame(table(Milwaukee_2000$race))
+names(raceMilwaukee_2000) <- c("Race", "Population")
+raceMilwaukee_2000$Percent <- 0
+raceMilwaukee_2000$Percent <- (raceMilwaukee_2000$Population / observationsMilwaukee_2000 * 100)
+nonwhiteraceMilwaukee_2000 <- raceMilwaukee_2000 %>% filter(raceMilwaukee_2000$Race != "White")
 #For if we want to print this to a table as well
 #print(xtable(racecityname_2000, type "latex"), file = "insert file path")
 #turning them into one table
-racecityname_1980$Year <- 1980
-racecityname_1990$Year <- 1990
-racecityname_2000$Year <- 2000
-racecitynameall <- rbind(racecityname_2000, racecityname_1990, racecityname_1980)
+raceMilwaukee_1980$Year <- 1980
+raceMilwaukee_1990$Year <- 1990
+raceMilwaukee_2000$Year <- 2000
+raceMilwaukeeall <- rbind(raceMilwaukee_2000, raceMilwaukee_1990, raceMilwaukee_1980)
 #plotting this city's racial composition over the years in a line graph
-ggplot(data = racecitynameall, aes(x=Year, y=Percent)) + geom_line(aes(colour=Race))
->>>>>>> 6a5782310fdaa25e8e4956faea4a1a4a3f89d62b
+ggplot(data = raceMilwaukeeall, aes(x=Year, y=Percent)) + 
+              geom_line(aes(colour=Race)) +
+              labs(title = "Percentage of Milwaukee Residents by Race")
+#graph of non-white percentages
+nonwhiteraceMilwaukee_1980$Year <- 1980
+nonwhiteraceMilwaukee_1990$Year <- 1990
+nonwhiteraceMilwaukee_2000$Year <- 2000
+nonwhiteraceMilwaukeeall <- rbind(nonwhiteraceMilwaukee_2000, nonwhiteraceMilwaukee_1990, nonwhiteraceMilwaukee_1980)
+#plotting this city's non-white racial composition over the years in a line graph
+ggplot(data = nonwhiteraceMilwaukeeall, aes(x=Year, y=Percent)) + 
+              geom_point(aes(colour=Race)) +
+              geom_line(aes(colour=Race)) +
+              labs(title = "Percentage of Non-white Residents in Milwaukee")
 
-
->>>>>>> 9010229b46d70ceae3e2d6458d8c2fd0f7413ef2
 
 NY_dfint <- NY_df1 %>%
   filter(RACE != RACE_SP) %>%
