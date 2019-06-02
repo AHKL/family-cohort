@@ -565,8 +565,35 @@ ggplot(data = nonwhiteraceCharlotteall, aes(x=Year, y=Percent)) +
   geom_line(aes(colour=Race)) +
   labs(title = "Percentages of Non-white Residents in Charlotte by Race")
 
+#New Race Graph = proportion non-white
+#City Codebook
+city_codebook <- tibble(PWMETRO = c(5080, 7240, 1520, 1600, 3360, 520),
+                        City = c("Milwaukee", "San Antonio", "Charlotte", "Chicago", "Houston", "Atlanta"))
+df_relevant <- df %>% 
+  filter(PWMETRO == 1520 | PWMETRO == 7240 | PWMETRO == 5080 | PWMETRO == 1600 | PWMETRO == 3360 | PWMETRO == 520) %>%
+  mutate(race_non_white = if_else(RACE != 1, 1, 0, missing = NULL)) 
 
+prop_non_white = df_relevant %>% 
+  group_by(PWMETRO, YEAR) %>%
+  summarise(diversity_prop = mean(race_non_white))
 
+prop_non_white <- prop_non_white %>% left_join(city_codebook)
+
+#bigcitiesracegraph
+bigcitiespropnonwhite <- prop_non_white %>% filter (City == "Chicago" | City == "Houston" | City == "Atlanta")
+bigcitiespropnonwhite$Percent <- bigcitiespropnonwhite$diversity_prop * 100
+ggplot(data = bigcitiespropnonwhite, aes(x=YEAR, y= Percent)) + 
+  geom_point(aes(colour=City)) +
+  geom_line(aes(color=City)) +
+  labs(title = "Percentage of Non-White Residents in Chicago, Houston, and Atlanta", x = "Year")
+
+#smallcitiesracegraph
+smallcitiespropnonwhite <- prop_non_white %>% filter (City == "Milwaukee" | City == "San Antonio" | City == "Charlotte")
+smallcitiespropnonwhite$Percent <- smallcitiespropnonwhite$diversity_prop * 100
+ggplot(data = smallcitiespropnonwhite, aes(x=YEAR, y= Percent)) + 
+  geom_point(aes(colour=City)) +
+  geom_line(aes(color=City)) +
+  labs(title = "Percentage of Non-White Residents in Charlotte, Milwaukee, and San Antonio", x = "Year")
 
 NY_dfint <- NY_df1 %>%
   filter(RACE != RACE_SP) %>%
